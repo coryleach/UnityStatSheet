@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -44,34 +43,45 @@ namespace Gameframe.StatSheet
                 }
             }
 
-            return new StatModifier<TKey>
+            if (mode == StatMode.Multiply)
             {
-                statType = statName,
-                value = 0,
-                mode = mode
-            };
+                return new StatModifier<TKey>
+                {
+                    statType = statName,
+                    value = 1,
+                    mode = StatMode.Multiply
+                };
+            }
+            else
+            {
+                return new StatModifier<TKey>
+                {
+                    statType = statName,
+                    value = 0,
+                    mode = StatMode.Add
+                };
+            }
         }
 
         public int Count => _mods.Count;
 
         public StatModifier<TKey> GetIndex(int index)
         {
-            throw new NotImplementedException();
+            return _mods[index];
         }
 
-        public float Modify(int index, float inValue)
+        public float Modify(TKey statType, float value)
         {
-            throw new NotImplementedException();
-        }
-
-        public float Modify(TKey statType, float inValue)
-        {
-            throw new NotImplementedException();
+            var adds = Get(statType, StatMode.Add);
+            var mul = Get(statType, StatMode.Multiply);
+            value += adds.value;
+            value *= mul.value;
+            return value;
         }
 
         public IEnumerator<StatModifier<TKey>> GetEnumerator()
         {
-            throw new NotImplementedException();
+            return _mods.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()

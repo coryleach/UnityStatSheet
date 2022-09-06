@@ -8,6 +8,5 @@ namespace Gameframe.StatSheet
     {
         int Count { get; }
         StatModifier<TKey> GetIndex(int index);
-        float Modify(int index, float inValue);
     }
 }

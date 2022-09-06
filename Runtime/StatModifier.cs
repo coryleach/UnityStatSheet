@@ -1,11 +1,10 @@
-using System;
 using UnityEngine;
 
 namespace Gameframe.StatSheet
 {
     public interface IStatModifier<TKey>
     {
-
+        float Modify(float inValue);
     }
 
     public struct StatModifier<TKey>
@@ -13,6 +12,11 @@ namespace Gameframe.StatSheet
         public TKey statType;
         public StatMode mode;
         public float value;
+
+        public float Modify(float inValue)
+        {
+            return (mode == StatMode.Add) ? inValue + value : inValue * value;
+        }
 
         public static StatModifier<TKey> operator +(StatModifier<TKey> lhs, StatModifier<TKey> rhs)
         {
@@ -29,28 +33,3 @@ namespace Gameframe.StatSheet
         }
     }
 }
-
-// namespace Gameframe.StatSheet
-// {
-//     [Serializable]
-//     public struct StatModifier
-//     {
-//         public string statName;
-//         public StatMode mode;
-//         public float value;
-//
-//         public static StatModifier operator +(StatModifier lhs, StatModifier rhs)
-//         {
-//             Debug.Assert(lhs.statName == rhs.statName);
-//             Debug.Assert(lhs.mode == rhs.mode);
-//             return new StatModifier() {statName = lhs.statName, mode = lhs.mode, value = lhs.value + rhs.value};
-//         }
-//
-//         public static StatModifier operator -(StatModifier lhs, StatModifier rhs)
-//         {
-//             Debug.Assert(lhs.statName == rhs.statName);
-//             Debug.Assert(lhs.mode == rhs.mode);
-//             return new StatModifier() {statName = lhs.statName, mode = lhs.mode, value = lhs.value - rhs.value};
-//         }
-//     }
-// }

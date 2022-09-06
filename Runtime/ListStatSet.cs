@@ -112,6 +112,12 @@ namespace Gameframe.StatSheet
 
         public int Count => stats.Count;
 
+        public void Clear()
+        {
+            IndexTable.Clear();
+            stats.Clear();
+        }
+
         public IStatValue<TKey> GetIndex(int index)
         {
             return stats[index];

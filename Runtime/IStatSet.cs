@@ -2,8 +2,8 @@ using System.Collections.Generic;
 
 namespace Gameframe.StatSheet
 {
-    public interface IStatSet<TKey> : IEnumerable<IStatValue<TKey>>
+    public interface IStatSet<TKey> : IEnumerable<IStatValue<TKey>>, IReadOnlyStatSet<TKey>
     {
-        public float this[TKey statKey] { get; set; }
+        public new float this[TKey statKey] { get; set; }
     }
 }

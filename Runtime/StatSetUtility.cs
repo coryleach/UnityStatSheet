@@ -1,5 +1,3 @@
-using Gameframe.StatSheet.Generic;
-
 namespace Gameframe.StatSheet
 {
     /// <summary>
