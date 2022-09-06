@@ -1,19 +1,17 @@
 {
-    "githubUrl": "",
-    "name": "com.gameframe.statsheet",
-    "displayName": "Gameframe.StatSheet",
-    "repositoryName": "UnityStatSheet",
-    "version": "1.0.0",
-    "description": "Statsheet system for RPG style character stats",
-    "type": "library",
-    "unity": "",
-    "unityRelease": "",
-    "keywords": [],
-    "author": {
-        "name": "Cory Leach",
-        "email": "cory.leach@gmail.com",
-        "url": "https://github.com/coryleach",
-        "twitter": "coryleach",
-        "github": "coryleach"
-    }
+  "githubUrl": "",
+  "name": "com.gameframe.statsheet",
+  "displayName": "Gameframe.StatSheet",
+  "repositoryName": "UnityStatSheet",
+  "version": "0.1.0",
+  "description": "Statsheet system for Role Playing Game style character stats",
+  "type": "library",
+  "keywords": [],
+  "author": {
+    "name": "Cory Leach",
+    "email": "cory.leach@gmail.com",
+    "url": "https://github.com/coryleach",
+    "twitter": "coryleach",
+    "github": "coryleach"
+  }
 }
