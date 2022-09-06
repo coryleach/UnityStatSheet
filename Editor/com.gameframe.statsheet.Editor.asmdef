@@ -1,1 +1,0 @@
-{ "name": "com.gameframe.statsheet.Editor", "references": [ "com.gameframe.statsheet" ], "optionalUnityReferences": [], "includePlatforms": [ "Editor" ], "excludePlatforms": [] }

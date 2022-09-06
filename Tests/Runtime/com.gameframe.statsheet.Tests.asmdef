@@ -1,1 +1,0 @@
-{ "name": "com.gameframe.statsheet.Tests", "references": [ "com.gameframe.statsheet" ], "optionalUnityReferences": ["TestAssemblies"], "includePlatforms": [], "excludePlatforms": [] }
