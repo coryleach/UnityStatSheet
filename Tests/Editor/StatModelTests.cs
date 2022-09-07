@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -15,7 +13,6 @@ namespace Gameframe.StatSheet.Tests
             Will
         }
 
-        // A Test behaves as an ordinary method
         [Test]
         public void CanCreate()
         {
@@ -42,7 +39,7 @@ namespace Gameframe.StatSheet.Tests
         }
 
         [Test]
-        public void Modifiers()
+        public void Modifiers_Add_and_Multiply()
         {
             var model = new StatModel<TestStatType>
             {
@@ -66,6 +63,28 @@ namespace Gameframe.StatSheet.Tests
             modifierSet.Set(TestStatType.Intelligence, 2, StatMode.Multiply);
             model.UpdateTotals();
             Assert.IsTrue(Mathf.Approximately(model[TestStatType.Intelligence],30), $"Expected 30 but got {model[TestStatType.Intelligence]}");
+        }
+
+        [Test]
+        public void IsDirty()
+        {
+            var model = new StatModel<TestStatType>
+            {
+                BaseStats = new ListStatSet<TestStatType>()
+            };
+            model.BaseStats[TestStatType.Intelligence] = 10;
+
+            //This works because StatModifierSet is a INotifyStatModifierSet
+            var modifierSet = new StatModifierSet<TestStatType>();
+            model.AddModifierSet(modifierSet);
+            Assert.IsTrue(model.IsDirty);
+            model.UpdateTotals();
+            Assert.IsFalse(model.IsDirty);
+            modifierSet.Set(TestStatType.Intelligence, 10, StatMode.Add);
+            Assert.IsTrue(model.IsDirty);
+            model.UpdateTotals();
+            Assert.IsFalse(model.IsDirty);
+            Assert.IsTrue(Mathf.Approximately(model[TestStatType.Intelligence],20));
         }
 
     }

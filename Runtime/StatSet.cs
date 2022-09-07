@@ -3,14 +3,6 @@ using System.Collections.Generic;
 
 namespace Gameframe.StatSheet
 {
-    // List of base stats
-    // List of adds from n sources
-    // List of multipliers from n sources
-    // Generate/Calculate List of final stats
-    // Need to Serialize just base stats
-    // Equipment is just a list of modifiers
-    // Need to be able to show stat delta (unequip modifier set A, equip set B and show how stats change)
-
     /// <summary>
     /// Abstract implementation of IStatSet<TKey>
     /// Provides Add and Subtract methods
@@ -20,7 +12,7 @@ namespace Gameframe.StatSheet
     {
         protected StatSet() { }
 
-        protected StatSet(IStatSet<TKey> set)
+        protected StatSet(IReadOnlyStatSet<TKey> set)
         {
             foreach (var statValue in set)
             {
@@ -38,7 +30,7 @@ namespace Gameframe.StatSheet
         /// Loops the given set and adds the value to this set.
         /// </summary>
         /// <param name="statSet">a stat set</param>
-        public void Add(IStatSet<TKey> statSet)
+        public void Add(IReadOnlyStatSet<TKey> statSet)
         {
             foreach (var stat in statSet)
             {
@@ -50,7 +42,7 @@ namespace Gameframe.StatSheet
         /// Loops over the given set and subtracts the values from the stats in this set
         /// </summary>
         /// <param name="statSet">a stat set</param>
-        public void Subtract(IStatSet<TKey> statSet)
+        public void Subtract(IReadOnlyStatSet<TKey> statSet)
         {
             foreach (var stat in statSet)
             {

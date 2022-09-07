@@ -1,18 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Gameframe.StatSheet
 {
-    public class StatModel : StatModel<string> { }
+    /// <summary>
+    ///
+    /// </summary>
+    public class StatModel : StatModel<string>
+    {
+    }
 
     public class StatModel<TKey> : IReadOnlyStatSet<TKey>
     {
         protected IStatSet<TKey> _baseStats;
+
         public IStatSet<TKey> BaseStats
         {
             get => _baseStats;
             set => _baseStats = value;
         }
+
+        public bool IsDirty { get; private set; }
 
         protected ListStatSet<TKey> _statTotals = new ListStatSet<TKey>();
         public IStatSet<TKey> StatTotals => _statTotals;
@@ -22,15 +31,43 @@ namespace Gameframe.StatSheet
         public virtual void AddModifierSet(IStatModifierSet<TKey> modifierSet)
         {
             _modifiers.Add(modifierSet);
+            //If this modifier set is a notify set then subscribe for changes
+            if (modifierSet is INotifyStatModifierSet<TKey> notifySet)
+            {
+                notifySet.ModifiersChanged += NotifySetOnModifiersChanged;
+            }
+
+            IsDirty = true;
         }
 
         public virtual void RemoveModifier(IStatModifierSet<TKey> modifierSet)
         {
             _modifiers.Remove(modifierSet);
+            if (modifierSet is INotifyStatModifierSet<TKey> notifySet)
+            {
+                notifySet.ModifiersChanged -= NotifySetOnModifiersChanged;
+            }
+
+            IsDirty = true;
         }
 
-        public void UpdateTotals()
+        private void NotifySetOnModifiersChanged(StatModifierSet<TKey> set, StatModifierSetChangedArgs<TKey> args)
         {
+            IsDirty = true;
+        }
+
+        /// <summary>
+        /// Update all stat totals
+        /// This method must be called to ensure all stats affected by modifiers are up to date
+        /// </summary>
+        /// <param name="checkDirty">When true totals will update only if IsDirty property is true</param>
+        public virtual void UpdateTotals(bool checkDirty = false)
+        {
+            if (checkDirty && !IsDirty)
+            {
+                return;
+            }
+
             //Add Base Stats
             _statTotals.Clear();
             if (_baseStats != null)
@@ -38,14 +75,19 @@ namespace Gameframe.StatSheet
                 _statTotals.Add(_baseStats);
             }
 
-            //
-            foreach (var modifierSet in _modifiers)
+            //Apply Adds
+            foreach (var mod in _modifiers.SelectMany(modifierSet => modifierSet.Get(StatMode.Add)))
             {
-                foreach (var mod in modifierSet)
-                {
-                    _statTotals[mod.statType] = mod.Modify(_statTotals[mod.statType]);
-                }
+                _statTotals[mod.statType] = mod.Modify(_statTotals[mod.statType]);
             }
+
+            //Apply Multipliers
+            foreach (var mod in _modifiers.SelectMany(modifierSet => modifierSet.Get(StatMode.Multiply)))
+            {
+                _statTotals[mod.statType] = mod.Modify(_statTotals[mod.statType]);
+            }
+
+            IsDirty = false;
         }
 
         #region IReadonlyStatSet Implementation
@@ -63,7 +105,5 @@ namespace Gameframe.StatSheet
         }
 
         #endregion
-
     }
-
 }

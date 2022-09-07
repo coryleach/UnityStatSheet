@@ -11,7 +11,7 @@ namespace Gameframe.StatSheet
         /// <param name="sets"></param>
         /// <typeparam name="TKey">The type of the Stat. Usually an enum.</typeparam>
         /// <returns>IStatSetIndexed<TKey></returns>
-        public static IStatSetIndexed<TKey> Sum<TKey>(params IStatSet<TKey>[] sets)
+        public static IStatSetIndexed<TKey> Sum<TKey>(params IReadOnlyStatSet<TKey>[] sets)
         {
             var newSet = new ListStatSet<TKey>();
             for (var i = 0; i < sets.Length; i++)

@@ -66,6 +66,8 @@ namespace Gameframe.StatSheet
         /// Duplicate stat names should only be possible if manually added via the Unity inspector
         /// </summary>
         [SerializeField]
+        // ReSharper disable once FieldCanBeMadeReadOnly.Global
+        // If we make this readonly it seems to become unserializable so don't do that pls
         protected List<StatValue> stats = new List<StatValue>();
 
         /// <summary>
