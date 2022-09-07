@@ -30,7 +30,10 @@ Find the manifest.json file in the Packages folder of your project and edit it t
 }
 ```
 
-<!-- DOC-START --><!-- DOC-END -->
+<!-- DOC-START -->
+This library is in experimental development.
+If you use it be aware there may be large changes and it is not well documented.
+<!-- DOC-END -->
 
 ## Author
 
