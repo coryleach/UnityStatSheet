@@ -3,7 +3,7 @@
   "name": "com.gameframe.statsheet",
   "displayName": "Gameframe.StatSheet",
   "repositoryName": "UnityStatSheet",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Statsheet system for Role Playing Game style character stats",
   "type": "library",
   "keywords": [],
