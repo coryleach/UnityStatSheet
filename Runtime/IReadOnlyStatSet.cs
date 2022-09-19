@@ -4,6 +4,6 @@ namespace Gameframe.StatSheet
 {
     public interface IReadOnlyStatSet<TKey> : IEnumerable<IStatValue<TKey>>
     {
-        public float this[TKey statKey] { get; }
+        float this[TKey statKey] { get; }
     }
 }
