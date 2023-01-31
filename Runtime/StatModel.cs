@@ -21,7 +21,27 @@ namespace Gameframe.StatSheet
             set => _baseStats = value;
         }
 
-        public bool IsDirty { get; private set; }
+        private bool _dirty = false;
+        public bool IsDirty
+        {
+            get => _dirty;
+            private set
+            {
+                if (_dirty == value)
+                {
+                    return;
+                }
+                _dirty = value;
+                if (_dirty)
+                {
+                    OnBecameDirty?.Invoke();
+                }
+            }
+        }
+
+        public delegate void StatModelDelegate();
+
+        public event StatModelDelegate OnBecameDirty;
 
         protected ListStatSet<TKey> _statTotals = new ListStatSet<TKey>();
         public IStatSet<TKey> StatTotals => _statTotals;
@@ -48,6 +68,19 @@ namespace Gameframe.StatSheet
                 notifySet.ModifiersChanged -= NotifySetOnModifiersChanged;
             }
 
+            IsDirty = true;
+        }
+
+        public void ClearModifiers()
+        {
+            foreach (var modifierSet in _modifiers)
+            {
+                if (modifierSet is INotifyStatModifierSet<TKey> notifySet)
+                {
+                    notifySet.ModifiersChanged -= NotifySetOnModifiersChanged;
+                }
+            }
+            _modifiers.Clear();
             IsDirty = true;
         }
 
