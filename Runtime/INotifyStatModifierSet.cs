@@ -19,7 +19,7 @@ namespace Gameframe.StatSheet
     /// Interface for a set of modifiers with an event for when modifies are changed or updated
     /// </summary>
     /// <typeparam name="TKey"></typeparam>
-    public interface INotifyReadOnlyStatModifierSet<TKey> : IReadOnlyStatSet<TKey>
+    public interface INotifyReadOnlyStatModifierSet<TKey> : IReadOnlyStatModifierSet<TKey>
     {
         event ReadOnlyStatModifierSetChangedEventHandler<TKey> ModifiersChanged;
     }
