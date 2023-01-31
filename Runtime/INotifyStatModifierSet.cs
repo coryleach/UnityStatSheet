@@ -15,7 +15,11 @@ namespace Gameframe.StatSheet
 
     public delegate void StatModifierSetChangedEventHandler<TKey>(IStatModifierSet<TKey> modifierSet, StatModifierSetChangedArgs<TKey> args);
 
-    public interface INotifyStatModifierSet<TKey> : IStatModifierSet<TKey>
+    /// <summary>
+    /// Interface for a mutable set of stat modifiers that provides an event callback to notify when modifiers change
+    /// </summary>
+    /// <typeparam name="TKey"></typeparam>
+    public interface INotifyStatModifierSet<TKey> : IStatModifierMutableSet<TKey>
     {
         event StatModifierSetChangedEventHandler<TKey> ModifiersChanged;
     }

@@ -5,6 +5,10 @@ using System.Linq;
 
 namespace Gameframe.StatSheet
 {
+    /// <summary>
+    /// Set of stat modifiers
+    /// </summary>
+    /// <typeparam name="TKey">Stat key type</typeparam>
     public class StatModifierSet<TKey> : BaseStatModifierSet<TKey>
     {
         private List<IStatModifier<TKey>> _mods = new List<IStatModifier<TKey>>();
@@ -33,8 +37,6 @@ namespace Gameframe.StatSheet
     /// <typeparam name="TKey"></typeparam>
     public abstract class BaseStatModifierSet<TKey> : INotifyStatModifierSet<TKey>
     {
-        //private readonly List<StatModifier<TKey>> _mods = new List<StatModifier<TKey>>();
-
         protected abstract IList<IStatModifier<TKey>> GetModifiersList();
 
         protected abstract IStatModifier<TKey> CreateModifier(TKey statType, float value, StatMode mode);
