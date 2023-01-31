@@ -51,7 +51,7 @@ namespace Gameframe.StatSheet
             IsDirty = true;
         }
 
-        private void NotifySetOnModifiersChanged(StatModifierSet<TKey> set, StatModifierSetChangedArgs<TKey> args)
+        private void NotifySetOnModifiersChanged(IStatModifierSet<TKey> set, StatModifierSetChangedArgs<TKey> args)
         {
             IsDirty = true;
         }
@@ -78,13 +78,13 @@ namespace Gameframe.StatSheet
             //Apply Adds
             foreach (var mod in _modifiers.SelectMany(modifierSet => modifierSet.Get(StatMode.Add)))
             {
-                _statTotals[mod.statType] = mod.Modify(_statTotals[mod.statType]);
+                _statTotals[mod.StatType] = mod.Modify(_statTotals[mod.StatType]);
             }
 
             //Apply Multipliers
             foreach (var mod in _modifiers.SelectMany(modifierSet => modifierSet.Get(StatMode.Multiply)))
             {
-                _statTotals[mod.statType] = mod.Modify(_statTotals[mod.statType]);
+                _statTotals[mod.StatType] = mod.Modify(_statTotals[mod.StatType]);
             }
 
             IsDirty = false;

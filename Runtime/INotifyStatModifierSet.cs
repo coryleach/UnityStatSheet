@@ -9,11 +9,11 @@ namespace Gameframe.StatSheet
     public struct StatModifierSetChangedArgs<TKey>
     {
         public StatModifierSetActionType Action;
-        public StatModifier<TKey> Modifier;
-        public StatModifier<TKey> Previous;
+        public IStatModifier<TKey> Modifier;
+        public IStatModifier<TKey> Previous;
     }
 
-    public delegate void StatModifierSetChangedEventHandler<TKey>(StatModifierSet<TKey> modifierSet, StatModifierSetChangedArgs<TKey> args);
+    public delegate void StatModifierSetChangedEventHandler<TKey>(IStatModifierSet<TKey> modifierSet, StatModifierSetChangedArgs<TKey> args);
 
     public interface INotifyStatModifierSet<TKey> : IStatModifierSet<TKey>
     {

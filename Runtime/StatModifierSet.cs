@@ -5,22 +5,47 @@ using System.Linq;
 
 namespace Gameframe.StatSheet
 {
+    public class StatModifierSet<TKey> : BaseStatModifierSet<TKey>
+    {
+        private List<IStatModifier<TKey>> _mods = new List<IStatModifier<TKey>>();
+
+        protected override IList<IStatModifier<TKey>> GetModifiersList()
+        {
+            return _mods;
+        }
+
+        protected override IStatModifier<TKey> CreateModifier(TKey statType, float value, StatMode mode)
+        {
+            var modifier = new StatModifier<TKey>()
+            {
+                StatType = statType,
+                Value = value,
+                Mode = mode
+            };
+            return modifier;
+        }
+    }
+
     /// <summary>
     /// Set of stat modifiers
     /// Stat modifiers are adds or multipliers that can be applied to a stat sheet
     /// </summary>
     /// <typeparam name="TKey"></typeparam>
-    public class StatModifierSet<TKey> : INotifyStatModifierSet<TKey>
+    public abstract class BaseStatModifierSet<TKey> : INotifyStatModifierSet<TKey>
     {
-        private readonly List<StatModifier<TKey>> _mods = new List<StatModifier<TKey>>();
+        //private readonly List<StatModifier<TKey>> _mods = new List<StatModifier<TKey>>();
+
+        protected abstract IList<IStatModifier<TKey>> GetModifiersList();
+
+        protected abstract IStatModifier<TKey> CreateModifier(TKey statType, float value, StatMode mode);
 
         /// <summary>
         /// Set a modifier
         /// </summary>
         /// <param name="modifier">Stat modifier value</param>
-        public void Set(StatModifier<TKey> modifier)
+        public void Set(IStatModifier<TKey> modifier)
         {
-            Set(modifier.statType,modifier.value, modifier.mode);
+            Set(modifier.StatType,modifier.Value, modifier.Mode);
         }
 
         /// <summary>
@@ -31,33 +56,29 @@ namespace Gameframe.StatSheet
         /// <param name="mode">how the value will be applied to the stat</param>
         public void Set(TKey statType, float value, StatMode mode)
         {
-            for (int i = 0; i < _mods.Count; i++)
+            var mods = GetModifiersList();
+
+            for (int i = 0; i < mods.Count; i++)
             {
-                if (_mods[i].statType.Equals(statType) && _mods[i].mode == mode)
+                if (mods[i].StatType.Equals(statType) && mods[i].Mode == mode)
                 {
                     //If there is no change in value then just return and do nothing
                     // ReSharper disable once CompareOfFloatsByEqualityOperator
-                    if (_mods[i].value == value)
+                    if (mods[i].Value == value)
                     {
                         return;
                     }
 
-                    var prevValue = _mods[i];
-                    var newVal = prevValue;
-                    newVal.value = value;
-                    _mods[i] = newVal;
+                    var prevValue = mods[i];
+                    var newVal = CreateModifier(prevValue.StatType, value, prevValue.Mode);
+                    mods[i] = newVal;
                     NotifyChanged(StatModifierSetActionType.Set, newVal, prevValue);
                     return;
                 }
             }
             //Adding a new modifier
-            var modifier = new StatModifier<TKey>()
-            {
-                statType = statType,
-                value = value,
-                mode = mode
-            };
-            _mods.Add(modifier);
+            var modifier = CreateModifier(statType, value, mode);
+            mods.Add(modifier);
             NotifyChanged(StatModifierSetActionType.Add, modifier);
         }
 
@@ -67,52 +88,46 @@ namespace Gameframe.StatSheet
         /// <param name="statType">Stat that is being affected</param>
         /// <param name="mode">how the stat is applied: Add or Multiply</param>
         /// <returns>StatModifier value</returns>
-        public StatModifier<TKey> Get(TKey statType, StatMode mode)
+        public IStatModifier<TKey> Get(TKey statType, StatMode mode)
         {
-            for (var i = 0; i < _mods.Count; i++)
+            var mods = GetModifiersList();
+
+            for (var i = 0; i < mods.Count; i++)
             {
-                if (_mods[i].statType.Equals(statType) && _mods[i].mode == mode)
+                if (mods[i].StatType.Equals(statType) && mods[i].Mode == mode)
                 {
-                    return _mods[i];
+                    return mods[i];
                 }
             }
 
             switch (mode)
             {
                 case StatMode.Multiply:
-                    return new StatModifier<TKey>
-                    {
-                        statType = statType,
-                        value = 1,
-                        mode = StatMode.Multiply
-                    };
+                    return CreateModifier(statType, 1, mode);
                 case StatMode.Add:
-                    return new StatModifier<TKey>
-                    {
-                        statType = statType,
-                        value = 0,
-                        mode = StatMode.Add
-                    };
+                    return CreateModifier(statType, 0, mode);
                 default:
                     throw new InvalidEnumArgumentException($"StatMode {mode} not implemented");
             }
         }
 
-        public IEnumerable<StatModifier<TKey>> Get(StatMode mode)
+        public IEnumerable<IStatModifier<TKey>> Get(StatMode mode)
         {
-            return _mods.Where(x => x.mode == mode);
+            return GetModifiersList().Where(x => x.Mode == mode).Cast<IStatModifier<TKey>>();
         }
 
-        public int Count => _mods.Count;
+        public int Count => GetModifiersList().Count;
 
-        public StatModifier<TKey> GetIndex(int index)
+        public IStatModifier<TKey> GetIndex(int index)
         {
-            return _mods[index];
+            var mods = GetModifiersList();
+            return mods[index];
         }
 
-        public IEnumerator<StatModifier<TKey>> GetEnumerator()
+        public IEnumerator<IStatModifier<TKey>> GetEnumerator()
         {
-            return _mods.GetEnumerator();
+            var mods = GetModifiersList();
+            return mods.Cast<IStatModifier<TKey>>().GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -122,7 +137,7 @@ namespace Gameframe.StatSheet
 
         public event StatModifierSetChangedEventHandler<TKey> ModifiersChanged;
 
-        private void NotifyChanged(StatModifierSetActionType action, StatModifier<TKey> modifier, StatModifier<TKey> previous = new StatModifier<TKey>())
+        private void NotifyChanged(StatModifierSetActionType action, IStatModifier<TKey> modifier, IStatModifier<TKey> previous = null)
         {
             ModifiersChanged?.Invoke(this, new StatModifierSetChangedArgs<TKey>
             {

@@ -26,9 +26,9 @@ namespace Gameframe.StatSheet.Tests
             modSet.Set(StatType.Str, 1, StatMode.Add);
 
             var modifier = modSet.Get(StatType.Str, StatMode.Add);
-            Assert.IsTrue(modifier.mode == StatMode.Add);
-            Assert.IsTrue(modifier.statType == StatType.Str);
-            Assert.IsTrue(Mathf.Approximately(1, modifier.value));
+            Assert.IsTrue(modifier.Mode == StatMode.Add);
+            Assert.IsTrue(modifier.StatType == StatType.Str);
+            Assert.IsTrue(Mathf.Approximately(1, modifier.Value));
 
             var moddedValue = modifier.Modify(1);
             Assert.IsTrue(Mathf.Approximately(2, moddedValue));
@@ -42,9 +42,9 @@ namespace Gameframe.StatSheet.Tests
             modSet.Set(StatType.Str, 5, StatMode.Multiply);
 
             var modifier = modSet.Get(StatType.Str, StatMode.Multiply);
-            Assert.IsTrue(modifier.mode == StatMode.Multiply);
-            Assert.IsTrue(modifier.statType == StatType.Str);
-            Assert.IsTrue(Mathf.Approximately(5, modifier.value));
+            Assert.IsTrue(modifier.Mode == StatMode.Multiply);
+            Assert.IsTrue(modifier.StatType == StatType.Str);
+            Assert.IsTrue(Mathf.Approximately(5, modifier.Value));
 
             var moddedValue = modifier.Modify(2);
             Assert.IsTrue(Mathf.Approximately(10, moddedValue));
@@ -62,10 +62,10 @@ namespace Gameframe.StatSheet.Tests
                 notified = true;
                 Assert.IsTrue(set == modSet);
                 Assert.IsTrue(args.Action == StatModifierSetActionType.Add);
-                Assert.IsTrue(args.Modifier.statType == StatType.Int);
+                Assert.IsTrue(args.Modifier.StatType == StatType.Int);
                 // ReSharper disable once CompareOfFloatsByEqualityOperator
-                Assert.IsTrue(args.Modifier.value == 2);
-                Assert.IsTrue(args.Modifier.mode == StatMode.Multiply);
+                Assert.IsTrue(args.Modifier.Value == 2);
+                Assert.IsTrue(args.Modifier.Mode == StatMode.Multiply);
             };
 
             modSet.Set(StatType.Int, 2, StatMode.Multiply);
@@ -88,14 +88,14 @@ namespace Gameframe.StatSheet.Tests
                 notified = true;
                 Assert.IsTrue(set == modSet);
                 Assert.IsTrue(args.Action == StatModifierSetActionType.Set);
-                Assert.IsTrue(args.Modifier.statType == StatType.Int);
+                Assert.IsTrue(args.Modifier.StatType == StatType.Int);
                 // ReSharper disable once CompareOfFloatsByEqualityOperator
-                Assert.IsTrue(args.Modifier.value == 3);
+                Assert.IsTrue(args.Modifier.Value == 3);
                 // ReSharper disable once CompareOfFloatsByEqualityOperator
-                Assert.IsTrue(args.Previous.value == 2);
-                Assert.IsTrue(args.Previous.statType == StatType.Int);
-                Assert.IsTrue(args.Previous.mode == StatMode.Multiply);
-                Assert.IsTrue(args.Modifier.mode == StatMode.Multiply);
+                Assert.IsTrue(args.Previous.Value == 2, $"Expected Value = 2 but Value = {args.Previous.Value }");
+                Assert.IsTrue(args.Previous.StatType == StatType.Int);
+                Assert.IsTrue(args.Previous.Mode == StatMode.Multiply);
+                Assert.IsTrue(args.Modifier.Mode == StatMode.Multiply);
             };
 
             modSet.Set(StatType.Int, 3, StatMode.Multiply);

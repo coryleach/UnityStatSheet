@@ -7,10 +7,10 @@ namespace Gameframe.StatSheet
     /// Generic version
     /// </summary>
     /// <typeparam name="TKey">Stat key type (Usually an enum)</typeparam>
-    public interface IStatModifierSet<TKey> : IEnumerable<StatModifier<TKey>>
+    public interface IStatModifierSet<TKey> : IEnumerable<IStatModifier<TKey>>
     {
-        StatModifier<TKey> Get(TKey statName, StatMode mode);
+        IStatModifier<TKey> Get(TKey statName, StatMode mode);
 
-        IEnumerable<StatModifier<TKey>> Get(StatMode mode);
+        IEnumerable<IStatModifier<TKey>> Get(StatMode mode);
     }
 }
