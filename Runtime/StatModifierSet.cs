@@ -6,7 +6,7 @@ namespace Gameframe.StatSheet
     /// Mutable set of stat modifiers
     /// </summary>
     /// <typeparam name="TKey">Stat key type</typeparam>
-    public class StatModifierSet<TKey> : BaseStatModifierMutableSet<TKey>
+    public class StatModifierSet<TKey> : BaseStatModifierSet<TKey>
     {
         private List<IStatModifier<TKey>> _mods = new List<IStatModifier<TKey>>();
 

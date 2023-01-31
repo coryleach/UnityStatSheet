@@ -1,16 +1,13 @@
-using System.Collections.Generic;
-
 namespace Gameframe.StatSheet
 {
     /// <summary>
-    /// Enumerable Set of stat modifiers
-    /// Generic version
+    /// Enumerable set of stat modifiers
+    /// Mutable version
     /// </summary>
-    /// <typeparam name="TKey">Stat key type (Usually an enum)</typeparam>
-    public interface IStatModifierSet<TKey> : IEnumerable<IStatModifier<TKey>>
+    /// <typeparam name="TKey"></typeparam>
+    public interface IStatModifierSet<TKey> : IReadOnlyStatModifierSet<TKey>
     {
-        IStatModifier<TKey> Get(TKey statName, StatMode mode);
-
-        IEnumerable<IStatModifier<TKey>> Get(StatMode mode);
+        void Set(IStatModifier<TKey> modifier);
+        void Set(TKey statType, float value, StatMode mode);
     }
 }

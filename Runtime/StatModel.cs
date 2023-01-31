@@ -46,9 +46,9 @@ namespace Gameframe.StatSheet
         protected ListStatSet<TKey> _statTotals = new ListStatSet<TKey>();
         public IStatSet<TKey> StatTotals => _statTotals;
 
-        protected List<IStatModifierSet<TKey>> _modifiers = new List<IStatModifierSet<TKey>>();
+        protected List<IReadOnlyStatModifierSet<TKey>> _modifiers = new List<IReadOnlyStatModifierSet<TKey>>();
 
-        public virtual void AddModifierSet(IStatModifierSet<TKey> modifierSet)
+        public virtual void AddModifierSet(IReadOnlyStatModifierSet<TKey> modifierSet)
         {
             _modifiers.Add(modifierSet);
             //If this modifier set is a notify set then subscribe for changes
@@ -56,22 +56,20 @@ namespace Gameframe.StatSheet
             {
                 notifySet.ModifiersChanged += NotifySetOnModifiersChanged;
             }
-
             IsDirty = true;
         }
 
-        public virtual void RemoveModifier(IStatModifierSet<TKey> modifierSet)
+        public virtual void RemoveModifier(IReadOnlyStatModifierSet<TKey> modifierSet)
         {
             _modifiers.Remove(modifierSet);
             if (modifierSet is INotifyStatModifierSet<TKey> notifySet)
             {
                 notifySet.ModifiersChanged -= NotifySetOnModifiersChanged;
             }
-
             IsDirty = true;
         }
 
-        public void ClearModifiers()
+        public virtual void ClearModifiers()
         {
             foreach (var modifierSet in _modifiers)
             {
@@ -84,7 +82,7 @@ namespace Gameframe.StatSheet
             IsDirty = true;
         }
 
-        private void NotifySetOnModifiersChanged(IStatModifierSet<TKey> set, StatModifierSetChangedArgs<TKey> args)
+        private void NotifySetOnModifiersChanged(IReadOnlyStatModifierSet<TKey> set, StatModifierSetChangedArgs<TKey> args)
         {
             IsDirty = true;
         }

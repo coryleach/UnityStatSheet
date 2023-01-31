@@ -10,7 +10,7 @@ namespace Gameframe.StatSheet
     /// Stat modifiers are adds or multipliers that can be applied to a stat sheet
     /// </summary>
     /// <typeparam name="TKey"></typeparam>
-    public abstract class BaseStatModifierImmutableSet<TKey> : IStatModifierSet<TKey>
+    public abstract class BaseReadOnlyStatModifierSet<TKey> : IReadOnlyStatModifierSet<TKey>
     {
         /// <summary>
         /// Get modifier for a given stat type and mode

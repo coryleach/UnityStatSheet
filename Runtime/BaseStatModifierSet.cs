@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Gameframe.StatSheet
 {
-    public abstract class BaseStatModifierMutableSet<TKey> : INotifyStatModifierSet<TKey>
+    public abstract class BaseStatModifierSet<TKey> : INotifyStatModifierSet<TKey>
     {
         protected abstract IList<IStatModifier<TKey>> GetModifiersList();
 

@@ -13,13 +13,13 @@ namespace Gameframe.StatSheet
         public IStatModifier<TKey> Previous;
     }
 
-    public delegate void StatModifierSetChangedEventHandler<TKey>(IStatModifierSet<TKey> modifierSet, StatModifierSetChangedArgs<TKey> args);
+    public delegate void StatModifierSetChangedEventHandler<TKey>(IReadOnlyStatModifierSet<TKey> modifierSet, StatModifierSetChangedArgs<TKey> args);
 
     /// <summary>
     /// Interface for a mutable set of stat modifiers that provides an event callback to notify when modifiers change
     /// </summary>
     /// <typeparam name="TKey"></typeparam>
-    public interface INotifyStatModifierSet<TKey> : IStatModifierMutableSet<TKey>
+    public interface INotifyStatModifierSet<TKey> : IStatModifierSet<TKey>
     {
         event StatModifierSetChangedEventHandler<TKey> ModifiersChanged;
     }
