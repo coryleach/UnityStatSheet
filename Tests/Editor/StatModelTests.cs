@@ -31,7 +31,8 @@ namespace Gameframe.StatSheet.Tests
             model.BaseStats = new ListStatSet<TestStatType>();
             Assert.NotNull(model.BaseStats);
 
-            var baseStats = model.BaseStats;
+            var baseStats = model.BaseStats as IStatSet<TestStatType>;
+            Assert.IsTrue(baseStats != null);
             baseStats[TestStatType.Intelligence] = 10;
             Assert.IsTrue(Mathf.Approximately(model[TestStatType.Intelligence],0));
             model.UpdateTotals();
@@ -41,12 +42,13 @@ namespace Gameframe.StatSheet.Tests
         [Test]
         public void Modifiers_Add_and_Multiply()
         {
+            var baseStats = new ListStatSet<TestStatType>();
             var model = new StatModel<TestStatType>
             {
-                BaseStats = new ListStatSet<TestStatType>()
+                BaseStats = baseStats
             };
 
-            model.BaseStats[TestStatType.Intelligence] = 10;
+            baseStats[TestStatType.Intelligence] = 10;
 
             var modifierSet = new StatModifierSet<TestStatType>();
             model.AddModifierSet(modifierSet);
@@ -68,11 +70,12 @@ namespace Gameframe.StatSheet.Tests
         [Test]
         public void IsDirty()
         {
+            var baseStats = new ListStatSet<TestStatType>();
             var model = new StatModel<TestStatType>
             {
-                BaseStats = new ListStatSet<TestStatType>()
+                BaseStats = baseStats
             };
-            model.BaseStats[TestStatType.Intelligence] = 10;
+            baseStats[TestStatType.Intelligence] = 10;
 
             //This works because StatModifierSet is a INotifyStatModifierSet
             var modifierSet = new StatModifierSet<TestStatType>();
