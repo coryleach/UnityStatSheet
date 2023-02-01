@@ -13,9 +13,9 @@ namespace Gameframe.StatSheet
 
     public class StatModel<TKey> : IReadOnlyStatSet<TKey>
     {
-        protected IStatSet<TKey> _baseStats;
+        protected IReadOnlyStatSet<TKey> _baseStats;
 
-        public IStatSet<TKey> BaseStats
+        public IReadOnlyStatSet<TKey> BaseStats
         {
             get => _baseStats;
             set => _baseStats = value;
