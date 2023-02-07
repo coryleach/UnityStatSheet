@@ -59,7 +59,7 @@ namespace Gameframe.StatSheet
             IsDirty = true;
         }
 
-        public virtual void RemoveModifier(IReadOnlyStatModifierSet<TKey> modifierSet)
+        public virtual void RemoveModifierSet(IReadOnlyStatModifierSet<TKey> modifierSet)
         {
             _modifiers.Remove(modifierSet);
             if (modifierSet is INotifyStatModifierSet<TKey> notifySet)
