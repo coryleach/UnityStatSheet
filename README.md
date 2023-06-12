@@ -33,6 +33,11 @@
 </p>
 <h1 align="center">Gameframe.StatSheet 👋</h1>
 
+<!-- BADGE-START ->
+<img align="center" src="https://raw.githubusercontent.com/coryleach/UnityPackages/master/Documentation/GameframeFace.gif" />
+</p>
+<h1 align="center">Gameframe.StatSheet 👋</h1>
+
 <!-- BADGE-START -<!-- BADGE-END -->
 
 Statsheet system for Role Playing Game style character stats
@@ -42,7 +47,7 @@ Statsheet system for Role Playing Game style character stats
 #### Using UnityPackageManager (for Unity 2019.3 or later)
 Open the package manager window (menu: Window > Package Manager)<br/>
 Select "Add package from git URL...", fill in the pop-up with the following link:<br/>
-https://github.com/coryleach/UnityStatSheet.git#0.2.5<br/>
+https://github.com/coryleach/UnityStatSheet.git#0.2.6<br/>
 
 #### Using UnityPackageManager (for Unity 2019.1 or later)
 
@@ -50,7 +55,7 @@ Find the manifest.json file in the Packages folder of your project and edit it t
 ```js
 {
   "dependencies": {
-    "com.gameframe.statsheet": "https://github.com/coryleach/UnityStatSheet.git#0.2.5",
+    "com.gameframe.statsheet": "https://github.com/coryleach/UnityStatSheet.git#0.2.6",
     ...
   },
 }

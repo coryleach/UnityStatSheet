@@ -42,6 +42,7 @@ namespace Gameframe.StatSheet
         public delegate void StatModelDelegate();
 
         public event StatModelDelegate OnBecameDirty;
+        public event StatModelDelegate OnTotalsUpdated;
 
         protected ListStatSet<TKey> _statTotals = new ListStatSet<TKey>();
         public IStatSet<TKey> StatTotals => _statTotals;
@@ -119,6 +120,7 @@ namespace Gameframe.StatSheet
             }
 
             IsDirty = false;
+            OnTotalsUpdated?.Invoke();
         }
 
         #region IReadonlyStatSet Implementation
